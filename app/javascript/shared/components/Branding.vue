@@ -36,7 +36,7 @@ export default {
   props: {
     disableBranding: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data() {
