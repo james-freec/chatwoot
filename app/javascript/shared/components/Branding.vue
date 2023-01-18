@@ -10,12 +10,12 @@
       class="branding--link justify-center"
     >
       <img
-        class="branding--image"
-        :alt="globalConfig.brandName"
-        :src="globalConfig.logoThumbnail"
+        class="branding--image" 
+        :alt="globalConfig.brandName" 
+        :src="globalConfig.logoThumbnail" 
       />
       <span>
-        {{ useInstallationName($t('POWERED_BY'), globalConfig.brandName) }}
+        {{ useInstallationName($t('POWERED_BY'), globalConfig.brandName)  }}
       </span>
     </a>
   </div>
@@ -26,9 +26,9 @@
 import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
 const {
-  LOGO_THUMBNAIL: logoThumbnail,
-  BRAND_NAME: brandName,
-  WIDGET_BRAND_URL: widgetBrandURL,
+  LOGO_THUMBNAIL: logoThumbnail, 
+  BRAND_NAME: brandName, 
+  WIDGET_BRAND_URL: widgetBrandURL, 
 } = window.globalConfig || {};
 
 export default {
