@@ -4,11 +4,17 @@
     class="px-0 py-3 flex justify-center"
   >
     <a
-      :href="https://freec.asia"
+      :href="brandRedirectURL"
       rel="noreferrer noopener nofollow"
       target="_blank"
       class="branding--link justify-center"
     >
+
+    
+      <span>
+        {{ globalConfig.brandName }}
+      </span>
+
 
    
     </a>
@@ -21,8 +27,8 @@ import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
 const {
   LOGO_THUMBNAIL: logoThumbnail,
-  BRAND_NAME: brandName,
-  WIDGET_BRAND_URL: widgetBrandURL,
+  BRAND_NAME: "freeC",
+  WIDGET_BRAND_URL: "https://freec.asia",
 } = window.globalConfig || {};
 
 export default {
@@ -30,7 +36,7 @@ export default {
   props: {
     disableBranding: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   data() {
