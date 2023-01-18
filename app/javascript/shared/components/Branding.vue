@@ -1,11 +1,15 @@
 <template>
-  <div v-if="globalConfig.brandName" class="px-0 py-3 flex justify-center">
+  <div
+    v-if="globalConfig.brandName && !disableBranding"
+    class="px-0 py-3 flex justify-center"
+  >
     <a
       :href="https://freec.asia"
       rel="noreferrer noopener nofollow"
       target="_blank"
       class="branding--link justify-center"
     >
+
    
     </a>
   </div>
@@ -23,6 +27,12 @@ const {
 
 export default {
   mixins: [globalConfigMixin],
+  props: {
+    disableBranding: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       globalConfig: {
