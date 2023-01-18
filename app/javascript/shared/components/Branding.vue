@@ -1,15 +1,22 @@
 <template>
-  <div v-if="globalConfig.brandName" class="px-0 py-3 flex justify-center">
+  <div
+    v-if="globalConfig.brandName && !disableBranding"
+    class="px-0 py-3 flex justify-center"
+  >
     <a
       :href="brandRedirectURL"
       rel="noreferrer noopener nofollow"
       target="_blank"
       class="branding--link justify-center"
     >
+
     
       <span>
         {{ globalConfig.brandName }}
       </span>
+
+
+   
     </a>
   </div>
   <div v-else class="p-3" />
@@ -26,6 +33,12 @@ const {
 
 export default {
   mixins: [globalConfigMixin],
+  props: {
+    disableBranding: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       globalConfig: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container overflow-auto">
     <article-header
       :header-title="headerTitle"
       :count="meta.count"
@@ -8,10 +8,9 @@
     />
     <article-table
       :articles="articles"
-      :article-count="articles.length"
       :current-page="Number(meta.currentPage)"
-      :total-count="meta.count"
-      @on-page-change="onPageChange"
+      :total-count="Number(meta.count)"
+      @page-change="onPageChange"
     />
     <div v-if="shouldShowLoader" class="articles--loader">
       <spinner />
@@ -45,16 +44,29 @@ export default {
   computed: {
     ...mapGetters({
       articles: 'articles/allArticles',
+      categories: 'categories/allCategories',
       uiFlags: 'articles/uiFlags',
       meta: 'articles/getMeta',
       isFetching: 'articles/isFetching',
       currentUserId: 'getCurrentUserID',
     }),
+    selectedCategory() {
+      return this.categories.find(
+        category => category.slug === this.selectedCategorySlug
+      );
+    },
     shouldShowEmptyState() {
       return !this.isFetching && !this.articles.length;
     },
     shouldShowLoader() {
       return this.isFetching && !this.articles.length;
+    },
+    selectedPortalSlug() {
+      return this.$route.params.portalSlug;
+    },
+    selectedCategorySlug() {
+      const { categorySlug } = this.$route.params;
+      return categorySlug;
     },
     articleType() {
       return this.$route.path.split('/').pop();
@@ -68,6 +80,9 @@ export default {
         case 'archived':
           return this.$t('HELP_CENTER.HEADER.TITLES.ARCHIVED');
         default:
+          if (this.$route.name === 'show_category') {
+            return this.headerTitleInCategoryView;
+          }
           return this.$t('HELP_CENTER.HEADER.TITLES.ALL_ARTICLES');
       }
     },
@@ -89,6 +104,11 @@ export default {
       }
       return null;
     },
+    headerTitleInCategoryView() {
+      return this.categories && this.categories.length
+        ? this.selectedCategory.name
+        : '';
+    },
   },
   watch: {
     $route() {
@@ -104,17 +124,18 @@ export default {
     newArticlePage() {
       this.$router.push({ name: 'new_article' });
     },
-    fetchArticles() {
+    fetchArticles({ pageNumber } = {}) {
       this.$store.dispatch('articles/index', {
-        pageNumber: this.pageNumber,
+        pageNumber: pageNumber || this.pageNumber,
         portalSlug: this.$route.params.portalSlug,
         locale: this.$route.params.locale,
         status: this.status,
         author_id: this.author,
+        category_slug: this.selectedCategorySlug,
       });
     },
-    onPageChange(page) {
-      this.fetchArticles({ pageNumber: page });
+    onPageChange(pageNumber) {
+      this.fetchArticles({ pageNumber });
     },
   },
 };
@@ -122,8 +143,9 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding: var(--space-small) var(--space-normal);
+  padding: 0 var(--space-normal);
   width: 100%;
+  overflow: auto;
   .articles--loader {
     align-items: center;
     display: flex;
