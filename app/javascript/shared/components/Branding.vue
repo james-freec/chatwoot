@@ -9,10 +9,13 @@
       target="_blank"
       class="branding--link justify-center"
     >
-
-    
+      <img
+        class="branding--image"
+        :alt="globalConfig.brandName"
+        :src="globalConfig.logoThumbnail"
+      />
       <span>
-        {{ globalConfig.brandName }}
+        {{ useInstallationName($t('POWERED_BY'), globalConfig.brandName) }}
       </span>
 
 
@@ -26,9 +29,9 @@
 import globalConfigMixin from 'shared/mixins/globalConfigMixin';
 
 const {
-  LOGO_THUMBNAIL: logoThumbnail,
-  BRAND_NAME: "freeC",
-  WIDGET_BRAND_URL: "https://freec.asia",
+  LOGO_THUMBNAIL: logoThumbnail, 
+  BRAND_NAME: brandName, 
+  WIDGET_BRAND_URL: widgetBrandURL, 
 } = window.globalConfig || {};
 
 export default {
